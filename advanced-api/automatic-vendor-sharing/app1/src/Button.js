@@ -6,6 +6,10 @@ const style = {
   padding: 12,
 };
 
-const Button = () => <button style={style}>App 1 Button</button>;
+const app1Onclick = () => {
+  console.log('clicked app 1 button')
+}
+
+const Button = () => <button onClick={app1Onclick} style={style}>App 1 Button</button>;
 
 export default Button;
