@@ -1,6 +1,13 @@
 {
-  "name": "automatic-vendor-sharing_app2",
-  "version": "0.0.0",
+  "name": "rspac-salt-spinner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "rspack dev",
+    "build": "rspack build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
     "@babel/core": "7.24.7",
     "@babel/preset-react": "7.24.7",
@@ -15,17 +22,16 @@
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "5.0.4"
   },
-  "scripts": {
-    "start": "rspack serve -c rspack.config.js",
-    "build": "rspack build --mode production -c rspack.config.js",
-    "legacy:start": "webpack serve --config webpack.config.js",
-    "legacy:build": "webpack --config webpack.config.js  --mode production",
-    "serve": "serve dist -p 3002",
-    "clean": "rm -rf dist"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@salt-ds/core": "1.44.1",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "@salt-ds/theme": "1.28.1",
+    "@types/react": "18.3.10",
+    "@types/react-dom": "18.3.0",
+    "css-loader": "^7.1.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }
