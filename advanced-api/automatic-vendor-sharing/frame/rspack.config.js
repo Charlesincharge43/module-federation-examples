@@ -1,5 +1,8 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { ModuleFederationPlugin } = require('@module-federation/enhanced');
+const {
+  HtmlRspackPlugin,
+} = require('@rspack/core');
+const {ModuleFederationPlugin} = require('@module-federation/enhanced/rspack')
+
 const path = require('path');
 
 // adds all your dependencies as shared modules
@@ -15,8 +18,10 @@ const deps = require('./package.json').dependencies;
 
 module.exports = {
   entry: './src/index',
-  cache: false,
   mode: 'development',
+  optimization: {
+    minimize: false,
+  },
   devServer: {
     static: {
       directory: path.join(__dirname, 'dist'),
@@ -26,7 +31,7 @@ module.exports = {
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
     },
-    port: 3001,
+    port: 3000,
   },
   target: 'web',
   output: {
@@ -35,24 +40,37 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        options: {
-          presets: ['@babel/preset-react'],
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'src'),
+        use: {
+          loader: 'builtin:swc-loader',
+          options: {
+            jsc: {
+              parser: {
+                syntax: 'ecmascript',
+                jsx: true,
+              },
+              transform: {
+                react: {
+                  runtime: 'automatic',
+                },
+              },
+            },
+          },
         },
       },
     ],
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'app1',
+      name: 'frame',
       filename: 'remoteEntry.js',
       remotes: {
-        app2: 'app2@http://localhost:3002/remoteEntry.js',
+        app1: 'app1@http://localhost:3001/remoteEntry.js',
+        app2: 'app2@http://localhost:3002/remoteEntry.js'
       },
       exposes: {
-        './Button': './src/Button',
+        './App': './src/App',
       },
       shared: {
         ...deps,
@@ -62,9 +80,13 @@ module.exports = {
         'react-dom': {
           singleton: true,
         },
+        axios: {
+          singleton: false,
+          eager: false,
+        }
       },
     }),
-    new HtmlWebpackPlugin({
+    new HtmlRspackPlugin({
       template: './public/index.html',
     }),
   ],

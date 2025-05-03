@@ -66,18 +66,18 @@ module.exports = {
       name: 'app2',
       filename: 'remoteEntry.js',
       remotes: {
-        app1: 'app1@http://localhost:3001/remoteEntry.js',
+        frame: 'frame@http://localhost:3000/remoteEntry.js',
       },
       exposes: {
-        './Button': './src/Button',
+        './App': './src/App',
       },
       shared: {
         ...deps,
         react: {
-          singleton: true,
+          singleton: true, import: false
         },
         'react-dom': {
-          singleton: true,
+          singleton: true, import: false
         },
       },
     }),
